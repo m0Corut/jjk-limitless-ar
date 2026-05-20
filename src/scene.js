@@ -82,6 +82,7 @@ export class SceneManager {
     // Video texture (will be set later)
     this.videoTexture = null;
     this.videoMesh = null;
+    this.mirrored = true;
 
     // Effects group — all effects go here
     this.effectsGroup = new THREE.Group();
@@ -158,8 +159,12 @@ export class SceneManager {
       scaleY = scaleX / videoAspect;
     }
 
-    // Mirror the video (flip X)
-    this.videoMesh.scale.set(-scaleX, scaleY, 1);
+    // Mirror the video if enabled
+    if (this.mirrored) {
+      this.videoMesh.scale.set(-scaleX, scaleY, 1);
+    } else {
+      this.videoMesh.scale.set(scaleX, scaleY, 1);
+    }
   }
 
   /**
@@ -173,8 +178,12 @@ export class SceneManager {
     const videoScaleX = Math.abs(this.videoMesh.scale.x);
     const videoScaleY = Math.abs(this.videoMesh.scale.y);
 
+    const xCoord = this.mirrored
+      ? ((1 - landmark.x) - 0.5) * videoScaleX  // mirrored X
+      : (landmark.x - 0.5) * videoScaleX;        // normal X
+
     return new THREE.Vector3(
-      ((1 - landmark.x) - 0.5) * videoScaleX, // mirror X
+      xCoord,
       (0.5 - landmark.y) * videoScaleY,       // flip Y
       0
     );

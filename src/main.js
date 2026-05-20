@@ -61,6 +61,50 @@ async function start() {
   guideCloseBottomBtn.addEventListener('click', closeGuide);
   guideOpenBtn.addEventListener('click', openGuide);
 
+  // Camera toggle logic
+  const cameraToggleBtn = document.getElementById('camera-toggle-btn');
+  let currentFacingMode = 'user';
+
+  cameraToggleBtn.addEventListener('click', async () => {
+    const newFacingMode = currentFacingMode === 'user' ? 'environment' : 'user';
+    
+    // Show loading screen while switching
+    loadingScreen.classList.remove('hidden');
+    loadingFill.style.width = '30%';
+
+    try {
+      // Stop old camera tracks
+      if (video.srcObject) {
+        video.srcObject.getTracks().forEach(track => track.stop());
+      }
+      loadingFill.style.width = '60%';
+
+      // Request new camera stream
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: newFacingMode, width: { ideal: 1280 }, height: { ideal: 720 } },
+      });
+      video.srcObject = stream;
+      await video.play();
+      loadingFill.style.width = '80%';
+
+      // Update state
+      currentFacingMode = newFacingMode;
+      const isMirrored = newFacingMode === 'user';
+      scene.mirrored = isMirrored;
+      gestures.mirrored = isMirrored;
+
+      // Update Three.js video scaling/mirroring
+      scene.updateVideoScale();
+      
+      loadingFill.style.width = '100%';
+      setTimeout(() => loadingScreen.classList.add('hidden'), 400);
+    } catch (error) {
+      console.error('Kamera geçiş hatası:', error);
+      loadingScreen.classList.add('hidden');
+      alert('Kamera geçişi başarısız oldu. Cihazınızda diğer kamera bulunmuyor veya izin verilmedi.');
+    }
+  });
+
   // Unlock audio on first interaction
   const unlockAudio = () => {
     audio.init();

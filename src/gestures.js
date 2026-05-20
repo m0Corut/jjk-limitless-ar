@@ -35,6 +35,7 @@ export class GestureDetector {
     this.state = STATE.IDLE;
     this.mergeStartTime = 0;
     this.launchStartTime = 0;
+    this.mirrored = true;
 
     this.redHand = null;
     this.blueHand = null;
@@ -184,8 +185,8 @@ export class GestureDetector {
         const dx = tip.x - wrist.x;
         const dy = tip.y - wrist.y;
         
-        // Reverse X for screen mirror, reverse Y because Y is top-down
-        let vx = -dx;
+        // Reverse X if mirrored, reverse Y because Y is top-down
+        let vx = this.mirrored ? -dx : dx;
         let vy = -dy; 
         
         const mag = Math.sqrt(vx*vx + vy*vy);
