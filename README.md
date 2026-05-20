@@ -50,6 +50,27 @@ Bu proje, Jujutsu Kaisen anime serisindeki efsanevi karakter **Gojo Satoru**'nun
 
 ---
 
+### Teknik Detaylar ve Mimari
+
+#### 1. El Takip & Jest Tanımlama Hattı (Pipeline)
+*   **Yapay Zeka Modeli:** Google MediaPipe `HandLandmarker` kütüphanesi kullanılmıştır. Düşük gecikme ve yüksek mobil performans için `float16` GPU delegate modeli tercih edilmiştir.
+*   **Jest Durum Makinesi:** Kararsız el hareketlerini engellemek için gecikme eşikli (debounce) ve kare bazlı durum makinesi (`GestureDetector`) geliştirilmiştir. Durumlar: `IDLE`, `RED_ACTIVE`, `BLUE_ACTIVE`, `BOTH_ACTIVE`, `MERGING`, `PURPLE_READY` ve `LAUNCHING`.
+*   **Aynalama ve Koordinat Dönüşümü:** MediaPipe'ın normalize edilmiş koordinat uzayı (0..1), Three.js'in Orthographic kamera uzayına dönüştürülür. Kamera modu `user` (ön) iken görüntüyü ayna şeklinde yansıtır; `environment` (arka) moduna geçildiğinde ayna yansıtması otomatik olarak kapatılarak doğru konumlandırma sağlanır.
+
+#### 2. WebGL Parçacık Motoru (`particles.js`)
+*   Enerji dalgalanmalarını simüle etmek için yüksek performanslı özel 3B parçacık motoru yazılmıştır. Parçacıkların çekim merkezleri, hızları, renkleri ve boyutları el koordinatlarına ve aktif tekniğe göre gerçek zamanlı güncellenir.
+    *   **Red:** Dışa doğru patlayan parçacıklar.
+    *   **Blue:** İçe doğru çekilen girdap parçacıkları.
+    *   **Purple:** Merkezde sarmal şekilde dönen yoğun mor küre parçacıkları.
+
+#### 3. Post-Processing & Görsel Efektler (`scene.js`)
+*   **UnrealBloomPass:** Lanetli enerjilere parıltı (glow) kazandırmak için Three.js post-processing katmanında Unreal Bloom geçişi kullanılır.
+*   **Chromatic Aberration (Renk Sapması Shader):** Hollow Purple fırlatıldığı anda ekranda yüksek kütle çekim bükülmesini simüle etmek için özel renk sapması shader'ı devreye girer.
+*   **Vignette Shader:** Köşeleri karartarak odağı lanetli enerjiye ve ele odaklar.
+*   **Screen Shake (Ekran Sarsıntısı):** Fırlatma anında kameraya rastgele sarsıntı (decay bazlı) uygulanır.
+
+---
+
 ### Kurulum ve Çalıştırma
 
 1.  **Bağımlılıkları Yükleyin:**
@@ -110,6 +131,27 @@ Developed using **MediaPipe Hand Landmarker** and **Three.js (WebGL)**, the appl
 *   **AI/Tracking:** Google MediaPipe (Tasks Vision - Hand Landmarker)
 *   **Bundler:** Vite
 *   **Audio:** Web Audio API
+
+---
+
+### Technical Details & Architecture
+
+#### 1. Hand Tracking & Gesture Recognition Pipeline
+*   **AI Model:** Google MediaPipe `HandLandmarker` is used, configured with the `float16` GPU delegate model for efficient desktop and mobile execution.
+*   **State Machine:** Gestures are processed via a robust, debounced state machine (`GestureDetector`). Supported states are: `IDLE`, `RED_ACTIVE`, `BLUE_ACTIVE`, `BOTH_ACTIVE`, `MERGING`, `PURPLE_READY`, and `LAUNCHING`.
+*   **Mirroring & Projection:** 2D normalized landmark coordinates `(0..1)` are projected into a scaled 3D Three.js Orthographic space. The coordinate mapping dynamically adapts to the selected camera: mirroring the front camera feed, and projecting directly for the rear camera.
+
+#### 2. WebGL Particle Engine (`particles.js`)
+*   A custom high-performance particle system controls thousands of individual particles. Attractors, velocities, colors, and lifespans adapt instantly to the hand's current position and activated technique:
+    *   **Red:** Outwardly repelling explosion particles.
+    *   **Blue:** Inwardly pulling vortex particles.
+    *   **Purple:** Highly dense, swirling spiral particles centered on the merge point.
+
+#### 3. Post-Processing & Rendering Shader Pipeline (`scene.js`)
+*   **UnrealBloomPass:** Generates a high-fidelity volumetric glow around active cursed energy nodes.
+*   **Chromatic Aberration Shader:** A custom GLSL shader that simulates intense gravitational distortion by shifting red/blue channels outwards from the center on Hollow Purple release.
+*   **Vignette Shader:** Applies screen-space edge darkening to direct visual focus towards the hand and techniques.
+*   **Camera Shake:** Implements dynamic screen-space decay-based camera shaking upon hollow purple launch.
 
 ---
 
