@@ -3,6 +3,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
 // Custom Chromatic Aberration shader
 const ChromaticAberrationShader = {
@@ -106,9 +107,13 @@ export class SceneManager {
     this.composer.addPass(this.chromaticPass);
 
     this.vignettePass = new ShaderPass(VignetteShader);
-    this.vignettePass.uniforms.darkness.value = 0.6;
-    this.vignettePass.uniforms.offset.value = 1.2;
+    this.vignettePass.uniforms.darkness.value = 0.3; // Softer vignette to prevent camera dimming
+    this.vignettePass.uniforms.offset.value = 1.0;
     this.composer.addPass(this.vignettePass);
+
+    // OutputPass handles final tone mapping and sRGB gamma correction
+    this.outputPass = new OutputPass();
+    this.composer.addPass(this.outputPass);
 
     // Screen shake
     this.shakeAmount = 0;
