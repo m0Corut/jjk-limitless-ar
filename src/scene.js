@@ -119,8 +119,17 @@ export class SceneManager {
     this.shakeAmount = 0;
     this.shakeDecay = 0.92;
 
-    // Resize
-    window.addEventListener('resize', () => this.onResize());
+    // Resize & Orientation Change
+    window.addEventListener('resize', () => {
+      this.onResize();
+      // Schedule delayed updates to handle layout and keyboard shift lags on mobile browsers
+      setTimeout(() => this.onResize(), 100);
+      setTimeout(() => this.onResize(), 300);
+    });
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => this.onResize(), 200);
+      setTimeout(() => this.onResize(), 500);
+    });
   }
 
   setupWebcam(videoElement) {
@@ -148,8 +157,24 @@ export class SceneManager {
     
     const video = this.videoTexture.image;
     // Default to a 16:9 ratio if metadata isn't fully loaded yet
-    const videoWidth = video.videoWidth || 1280;
-    const videoHeight = video.videoHeight || 720;
+    let videoWidth = video.videoWidth || 1280;
+    let videoHeight = video.videoHeight || 720;
+
+    // Mobile Orientation Swap Fix:
+    // If the device is in portrait but the video stream returns landscape (or vice-versa),
+    // the browser is providing raw sensor dimensions instead of the rotated frame.
+    // We swap them to calculate the correct aspect ratio and prevent horizontal/vertical stretching.
+    const isScreenPortrait = window.innerHeight > window.innerWidth;
+    const isVideoLandscape = videoWidth > videoHeight;
+    if (isScreenPortrait && isVideoLandscape) {
+      const temp = videoWidth;
+      videoWidth = videoHeight;
+      videoHeight = temp;
+    } else if (!isScreenPortrait && !isVideoLandscape) {
+      const temp = videoWidth;
+      videoWidth = videoHeight;
+      videoHeight = temp;
+    }
 
     const videoAspect = videoWidth / videoHeight;
     const screenAspect = window.innerWidth / window.innerHeight;
