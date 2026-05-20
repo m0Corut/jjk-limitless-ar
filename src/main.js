@@ -19,25 +19,35 @@ let scene, particles, effects;
 let prevState = STATE.IDLE;
 
 async function start() {
+  let isSwitchingCamera = false;
+
   loadingFill.style.width = '20%';
 
   scene = new SceneManager(container);
   particles = new ParticleSystem(scene.effectsGroup);
   effects = new EffectsManager(scene, particles);
-  loadingFill.style.width = '30%';
+  loadingFill.style.width = '35%';
 
-  const stream = await navigator.mediaDevices.getUserMedia({
-    video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } },
-  });
-  video.srcObject = stream;
-  await video.play();
-  loadingFill.style.width = '50%';
+  try {
+    // Parallelize camera permission/stream request and MediaPipe Hand Landmarker model loading
+    const [stream, _] = await Promise.all([
+      navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } },
+      }),
+      tracker.init()
+    ]);
 
-  scene.setupWebcam(video);
-  loadingFill.style.width = '70%';
+    loadingFill.style.width = '75%';
+    video.srcObject = stream;
+    await video.play();
 
-  await tracker.init();
-  loadingFill.style.width = '100%';
+    scene.setupWebcam(video);
+    loadingFill.style.width = '100%';
+  } catch (err) {
+    console.error("Initialization error:", err);
+    loadingScreen.innerHTML = `<div id="loading-text">HATA</div><div id="loading-subtitle" style="padding: 10px; color: #ff3333; font-family: monospace; font-size: 14px; margin-top: 15px;">Kamera veya model yüklenemedi:<br>${err.message}</div>`;
+    return;
+  }
 
   setTimeout(() => loadingScreen.classList.add('hidden'), 500);
 
@@ -66,7 +76,10 @@ async function start() {
   let currentFacingMode = 'user';
 
   cameraToggleBtn.addEventListener('click', async () => {
+    if (isSwitchingCamera) return; // Prevent double clicks
+    
     const newFacingMode = currentFacingMode === 'user' ? 'environment' : 'user';
+    isSwitchingCamera = true;
     
     // Show loading screen while switching
     loadingScreen.classList.remove('hidden');
@@ -76,7 +89,11 @@ async function start() {
       // Stop old camera tracks
       if (video.srcObject) {
         video.srcObject.getTracks().forEach(track => track.stop());
+        video.srcObject = null;
       }
+      
+      // Delay to release camera hardware on mobile devices
+      await new Promise(resolve => setTimeout(resolve, 300));
       loadingFill.style.width = '60%';
 
       // Request new camera stream
@@ -97,10 +114,14 @@ async function start() {
       scene.updateVideoScale();
       
       loadingFill.style.width = '100%';
-      setTimeout(() => loadingScreen.classList.add('hidden'), 400);
+      setTimeout(() => {
+        loadingScreen.classList.add('hidden');
+        isSwitchingCamera = false;
+      }, 400);
     } catch (error) {
       console.error('Kamera geçiş hatası:', error);
       loadingScreen.classList.add('hidden');
+      isSwitchingCamera = false;
       alert('Kamera geçişi başarısız oldu. Cihazınızda diğer kamera bulunmuyor veya izin verilmedi.');
     }
   });
@@ -115,14 +136,22 @@ async function start() {
   document.addEventListener('touchstart', unlockAudio);
 
   let lastTime = performance.now();
+  let lastDetectTime = 0;
+  const DETECT_INTERVAL = 33; // Target ~30fps for MediaPipe to save battery & CPU
 
   function loop() {
     const now = performance.now();
     const dt = Math.min((now - lastTime) / 1000, 0.05);
     lastTime = now;
 
-    // Hand tracking
-    tracker.detect(video, now);
+    // Hand tracking with controlled frequency and transition guard
+    if (!isSwitchingCamera && video.readyState >= 2) {
+      if (now - lastDetectTime >= DETECT_INTERVAL) {
+        tracker.detect(video, now);
+        lastDetectTime = now;
+      }
+    }
+    
     const hands = tracker.getHands();
     const result = gestures.update(hands, dt);
 

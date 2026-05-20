@@ -65,9 +65,9 @@ export class SceneManager {
 
     // Renderer
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // Optimized pixel ratio for mobile performance
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    this.renderer.toneMapping = THREE.NoToneMapping; // Disabled tone mapping to keep natural camera brightness and quality
     this.renderer.toneMappingExposure = 1.0;
     container.appendChild(this.renderer.domElement);
 
