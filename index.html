@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>呪術廻戦 — Cursed Technique System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Three.js canvas will be injected here -->
+    <div id="canvas-container"></div>
+
+    <!-- Hidden video element for webcam -->
+    <video id="webcam" autoplay playsinline style="display:none;"></video>
+
+    <!-- UI Overlay -->
+    <div id="ui-overlay">
+      <div id="header">
+        <div id="header-title">呪術廻戦</div>
+        <div id="header-subtitle">CURSED TECHNIQUE SYSTEM</div>
+        <div id="header-status">IDLE</div>
+      </div>
+
+      <div id="technique-name">
+        <div id="technique-kanji"></div>
+        <div id="technique-label"></div>
+      </div>
+
+      <div id="hand-status">
+        <div id="hand-left">LEFT: <span class="dot">●</span> <span class="status-text">—</span></div>
+        <div id="hand-right">RIGHT: <span class="dot">●</span> <span class="status-text">—</span></div>
+      </div>
+    </div>
+
+    <!-- Loading screen -->
+    <div id="loading-screen">
+      <div id="loading-text">呪術廻戦</div>
+      <div id="loading-subtitle">Initializing Cursed Energy...</div>
+      <div id="loading-bar"><div id="loading-fill"></div></div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.env.*
+.DS_Store
+.gemini
+.agent
+.agents
+skills-lock.json
+*.log

@@ -1,0 +1,242 @@
+/* === Reset & Base === */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  font-family: 'Orbitron', sans-serif;
+  color: #fff;
+}
+
+#app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* === Canvas Container === */
+#canvas-container {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+#canvas-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* === UI Overlay === */
+#ui-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Header */
+#header {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 12px 28px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#header-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 8px;
+  background: linear-gradient(135deg, #ff4444, #ff8800, #ff4444);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+#header-subtitle {
+  font-size: 10px;
+  letter-spacing: 6px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 4px;
+}
+
+#header-status {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: rgba(255, 255, 255, 0.3);
+  margin-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 8px;
+}
+
+/* Technique Name - center screen */
+#technique-name {
+  text-align: center;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  pointer-events: none;
+}
+
+#technique-name.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+#technique-kanji {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 120px;
+  font-weight: 900;
+  text-shadow: 0 0 40px currentColor, 0 0 80px currentColor;
+}
+
+#technique-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 12px;
+  margin-top: -10px;
+}
+
+/* Technique Colors */
+#technique-name.red { color: #ff3333; }
+#technique-name.blue { color: #3366ff; }
+#technique-name.purple { color: #aa22ff; }
+
+/* Hand Status */
+#hand-status {
+  display: flex;
+  gap: 40px;
+  font-size: 12px;
+  letter-spacing: 3px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 10px 24px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dot {
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.dot.active { color: #00ff88; }
+.dot.red { color: #ff3333; }
+.dot.blue { color: #3366ff; }
+.dot.purple { color: #aa22ff; }
+
+.status-text {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Loading Screen */
+#loading-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.8s ease;
+}
+
+#loading-screen.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#loading-text {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 48px;
+  font-weight: 900;
+  letter-spacing: 12px;
+  background: linear-gradient(135deg, #ff4444, #aa22ff, #3366ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+#loading-subtitle {
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 12px;
+}
+
+#loading-bar {
+  width: 200px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  margin-top: 24px;
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+#loading-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ff4444, #aa22ff, #3366ff);
+  transition: width 0.3s ease;
+}
+
+/* Screen Flash */
+#app.flash {
+  animation: screenFlash 0.3s ease-out;
+}
+
+@keyframes screenFlash {
+  0% { filter: brightness(3) saturate(0.5); }
+  100% { filter: brightness(1) saturate(1); }
+}
+
+/* === Responsive adjustments for mobile === */
+@media (max-width: 768px) {
+  body, html {
+    height: 100svh; /* Better support for mobile browser UI (Safari bottom bar) */
+  }
+  #app {
+    height: 100svh;
+  }
+  #header {
+    padding: 8px 16px;
+  }
+  #header-title {
+    font-size: 20px;
+    letter-spacing: 4px;
+  }
+  #technique-kanji {
+    font-size: 72px; /* Smaller for mobile to prevent overflow */
+  }
+  #technique-label {
+    font-size: 16px;
+    letter-spacing: 8px;
+  }
+  #hand-status {
+    gap: 16px;
+    padding: 10px 16px;
+    font-size: 10px;
+  }
+  #loading-text {
+    font-size: 36px;
+    letter-spacing: 8px;
+  }
+}
