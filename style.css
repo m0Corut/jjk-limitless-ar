@@ -208,6 +208,286 @@ html, body {
   100% { filter: brightness(1) saturate(1); }
 }
 
+/* === Guide Panel & Button === */
+#guide-open-btn {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  z-index: 15;
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  pointer-events: auto;
+}
+
+#guide-open-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+#guide-open-btn.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+}
+
+#guide-panel {
+  position: absolute;
+  left: 20px;
+  top: 100px;
+  bottom: 100px;
+  width: 380px;
+  z-index: 20;
+  background: rgba(8, 8, 12, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  pointer-events: auto;
+}
+
+#guide-panel:not(.visible) {
+  transform: translateX(-420px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+#guide-close-btn {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.2s;
+  line-height: 1;
+}
+
+#guide-close-btn:hover {
+  color: #fff;
+}
+
+.guide-header {
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 12px;
+}
+
+.guide-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.guide-subtitle {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 4px;
+}
+
+.guide-content {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-right: 4px;
+}
+
+/* Custom Scrollbar for Guide */
+.guide-content::-webkit-scrollbar {
+  width: 4px;
+}
+.guide-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+.guide-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+.guide-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.guide-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  padding: 12px 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.guide-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  transition: all 0.3s ease;
+}
+
+/* Card Themes */
+.guide-card.red-theme::before { background: #ff3333; }
+.guide-card.red-theme:hover {
+  border-color: rgba(255, 51, 51, 0.2);
+  background: rgba(255, 51, 51, 0.03);
+  box-shadow: 0 4px 15px rgba(255, 51, 51, 0.05);
+}
+
+.guide-card.blue-theme::before { background: #3366ff; }
+.guide-card.blue-theme:hover {
+  border-color: rgba(51, 102, 255, 0.2);
+  background: rgba(51, 102, 255, 0.03);
+  box-shadow: 0 4px 15px rgba(51, 102, 255, 0.05);
+}
+
+.guide-card.purple-theme::before { background: #aa22ff; }
+.guide-card.purple-theme:hover {
+  border-color: rgba(170, 34, 255, 0.2);
+  background: rgba(170, 34, 255, 0.03);
+  box-shadow: 0 4px 15px rgba(170, 34, 255, 0.05);
+}
+
+.guide-card.hollow-theme::before {
+  background: linear-gradient(to bottom, #ff3333, #aa22ff, #3366ff);
+}
+.guide-card.hollow-theme:hover {
+  border-color: rgba(170, 34, 255, 0.3);
+  background: rgba(170, 34, 255, 0.04);
+  box-shadow: 0 4px 20px rgba(170, 34, 255, 0.08);
+}
+
+.guide-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.guide-card-header .kanji {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 16px;
+  font-weight: 900;
+  min-width: 28px;
+  width: auto;
+  height: 28px;
+  padding: 0 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.red-theme .kanji { color: #ff3333; text-shadow: 0 0 5px rgba(255, 51, 51, 0.5); }
+.blue-theme .kanji { color: #3366ff; text-shadow: 0 0 5px rgba(51, 102, 255, 0.5); }
+.purple-theme .kanji { color: #aa22ff; text-shadow: 0 0 5px rgba(170, 34, 255, 0.5); }
+.hollow-theme .kanji {
+  color: #fff;
+  background: linear-gradient(135deg, #ff3333, #3366ff);
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.title-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.tech-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.hand-label {
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 1.5px;
+  margin-top: 2px;
+}
+
+.gesture-visual {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.gesture-icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 4px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.red-theme .gesture-icon { color: #ff5555; }
+.blue-theme .gesture-icon { color: #5588ff; }
+.purple-theme .gesture-icon { color: #cc66ff; }
+.hollow-theme .gesture-icon { color: #dd99ff; }
+
+.gesture-desc {
+  font-size: 9.5px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.75);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+#guide-close-bottom-btn {
+  margin-top: 16px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  transition: all 0.2s;
+}
+
+#guide-close-bottom-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 3px;
+}
+
 /* === Responsive adjustments for mobile === */
 @media (max-width: 768px) {
   body, html {
@@ -238,5 +518,31 @@ html, body {
   #loading-text {
     font-size: 36px;
     letter-spacing: 8px;
+  }
+  
+  /* Responsive Guide */
+  #guide-panel {
+    left: 10px;
+    right: 10px;
+    top: 90px;
+    bottom: 90px;
+    width: auto;
+    padding: 16px;
+  }
+  #guide-panel:not(.visible) {
+    transform: translateY(110%);
+    opacity: 0;
+  }
+  .guide-title {
+    font-size: 16px;
+  }
+  .gesture-desc {
+    font-size: 9px;
+  }
+  #guide-open-btn {
+    left: 10px;
+    bottom: 10px;
+    padding: 8px 12px;
+    font-size: 10px;
   }
 }

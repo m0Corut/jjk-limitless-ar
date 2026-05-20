@@ -22,10 +22,10 @@ export class AudioManager {
       this.sounds[name] = audio;
     };
 
-    load('red',    '/sound/red.mp3');
-    load('blue',   '/sound/blue.mp3');
-    load('purple', '/sound/hollow.mp3');
-    load('launch', '/sound/purple-launch.mp3');
+    load('red',    'sound/red.mp3');
+    load('blue',   'sound/blue.mp3');
+    load('purple', 'sound/hollow.mp3');
+    load('launch', 'sound/purple-launch.mp3');
 
     this.initialized = true;
   }

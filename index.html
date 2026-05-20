@@ -36,6 +36,111 @@
       </div>
     </div>
 
+    <!-- Rehber Panel (Guide Panel) -->
+    <div id="guide-panel" class="visible">
+      <button id="guide-close-btn" aria-label="Rehberi Kapat">&times;</button>
+      <div class="guide-header">
+        <div class="guide-title">GOJO SATORU TEKNİKLERİ</div>
+        <div class="guide-subtitle">Lanetli Teknik Kontrol Paneli</div>
+      </div>
+      <div class="guide-content">
+        <!-- Red Card -->
+        <div class="guide-card red-theme">
+          <div class="guide-card-header">
+            <span class="kanji">赫</span>
+            <div class="title-group">
+              <span class="tech-title">RED (Aka - 赫)</span>
+              <span class="hand-label">SAĞ EL</span>
+            </div>
+          </div>
+          <div class="guide-card-body">
+            <div class="gesture-visual">
+              <svg class="gesture-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 14V3a1.5 1.5 0 0 1 3 0v11" />
+                <path d="M13 14v-2a1.5 1.5 0 0 1 3 0v2" />
+                <path d="M16 14v-1.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-12 0v-4a1.5 1.5 0 0 1 3 0v3" />
+                <path d="M7 11.5a1.5 1.5 0 0 1 1.5 1.5" />
+              </svg>
+              <span class="gesture-desc">İşaret parmağınızı yukarı uzatın (diğer parmaklar kapalı). Kırmızı patlayıcı enerji oluşturur.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Blue Card -->
+        <div class="guide-card blue-theme">
+          <div class="guide-card-header">
+            <span class="kanji">蒼</span>
+            <div class="title-group">
+              <span class="tech-title">BLUE (Ao - 蒼)</span>
+              <span class="hand-label">SOL EL</span>
+            </div>
+          </div>
+          <div class="guide-card-body">
+            <div class="gesture-visual">
+              <svg class="gesture-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 14V3a1.5 1.5 0 0 1 3 0v11" />
+                <path d="M13 14v-2a1.5 1.5 0 0 1 3 0v2" />
+                <path d="M16 14v-1.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-12 0v-4a1.5 1.5 0 0 1 3 0v3" />
+                <path d="M7 11.5a1.5 1.5 0 0 1 1.5 1.5" />
+              </svg>
+              <span class="gesture-desc">İşaret parmağınızı yukarı uzatın (diğer parmaklar kapalı). Mavi çekim alanı oluşturur.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Merge Card -->
+        <div class="guide-card purple-theme">
+          <div class="guide-card-header">
+            <span class="kanji">融合</span>
+            <div class="title-group">
+              <span class="tech-title">SENTEZ (Birleşme)</span>
+              <span class="hand-label">İKİ EL</span>
+            </div>
+          </div>
+          <div class="guide-card-body">
+            <div class="gesture-visual">
+              <svg class="gesture-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12h5" />
+                <circle cx="9" cy="12" r="1.5" fill="currentColor" />
+                <path d="M20 12h-5" />
+                <circle cx="15" cy="12" r="1.5" fill="currentColor" />
+                <path d="M10.5 12h3" stroke-dasharray="2 2" />
+              </svg>
+              <span class="gesture-desc">İki elinizin işaret parmağını birbirine yaklaştırın ve 1 saniye bekletin.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Purple Ready/Launch Card -->
+        <div class="guide-card hollow-theme">
+          <div class="guide-card-header">
+            <span class="kanji">茈</span>
+            <div class="title-group">
+              <span class="tech-title">HOLLOW PURPLE (茈)</span>
+              <span class="hand-label">FIRLATMA</span>
+            </div>
+          </div>
+          <div class="guide-card-body">
+            <div class="gesture-visual">
+              <svg class="gesture-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 14V5a1.5 1.5 0 0 1 3 0v9" />
+                <path d="M18 14V7.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-12 0v-4a1.5 1.5 0 0 1 3 0v3" />
+                <path d="M12 14v-2a1.5 1.5 0 0 1 3 0v2" />
+                <path d="M15 14v-2a1.5 1.5 0 0 1 3 0v2" />
+              </svg>
+              <span class="gesture-desc">Mor küre oluştuğunda, işaret ve serçe parmağınızı açın (diğer parmaklar kapalı) ve elinizi hedefe doğrultun!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button id="guide-close-bottom-btn">ANLADIM</button>
+    </div>
+
+    <!-- Rehber Açma Butonu -->
+    <button id="guide-open-btn" class="hidden">
+      <span class="icon">?</span> REHBER
+    </button>
+
     <!-- Loading screen -->
     <div id="loading-screen">
       <div id="loading-text">呪術廻戦</div>

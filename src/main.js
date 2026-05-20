@@ -41,6 +41,26 @@ async function start() {
 
   setTimeout(() => loadingScreen.classList.add('hidden'), 500);
 
+  // Guide Panel controls
+  const guidePanel = document.getElementById('guide-panel');
+  const guideOpenBtn = document.getElementById('guide-open-btn');
+  const guideCloseBtn = document.getElementById('guide-close-btn');
+  const guideCloseBottomBtn = document.getElementById('guide-close-bottom-btn');
+
+  const closeGuide = () => {
+    guidePanel.classList.remove('visible');
+    guideOpenBtn.classList.remove('hidden');
+  };
+
+  const openGuide = () => {
+    guidePanel.classList.add('visible');
+    guideOpenBtn.classList.add('hidden');
+  };
+
+  guideCloseBtn.addEventListener('click', closeGuide);
+  guideCloseBottomBtn.addEventListener('click', closeGuide);
+  guideOpenBtn.addEventListener('click', openGuide);
+
   // Unlock audio on first interaction
   const unlockAudio = () => {
     audio.init();
